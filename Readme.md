@@ -8,6 +8,7 @@ The Sample API Gateway is a microservice designed for authentication and authori
 - Redis: In-memory data structure store for session storage.
 - MongoDB: NoSQL database for persistent storage of user data.
 - OAuth 2.0 (Future Plan): Secure authentication using Google OAuth for enhanced user authentication.
+- Nginx - for load balancing
 
 ## Prerequisites
 
