@@ -1,0 +1,107 @@
+https://www.youtube.com/watch?v=2PPSXonhIck
+
+https://www.youtube.com/watch?v=kmAzuH2Lzug&list=PLcCp4mjO-z9_HmJ5rSonmiEGfP-kyRMlI
+
+=====================================================
+authentication can be : 
+1] JWT-stateless  : if no session is stored in server
+  Ex. if only jwt is verified for authentication
+
+2] Session-statefull : if session is stored in backend
+
+IMP: When using a session store, such as Redis, 
+the actual session data is stored on the server, 
+and only a session identifier (usually a unique ID) 
+is sent to the client as a cookie. 
+  
+Session = cookie + sessionID (unique)
+
+in browser = set-header : { sessionID : cookie }
+
+cookie contains encrypted data which only be 
+decrypted using session secret
+- on the server side if it is not decrypted it is 
+inavalid session
+
+ Ex. with every request cookies are sent which 
+   contains session data and this session has Id
+   i.e. sessionID using this user is validated and
+   identified and his history is taken from session
+  General process for Session :
+    //The session data is typically stored 
+    in the session store, such as Redis, 
+    at the end of the request lifecycle
+
+    // general process: 
+  
+   1] create session (cookie + userData ) and Attach to 
+   REQUEST object not to RESPONSE object
+  [ session = cookie + session data (can user data)]
+  [ cookie = conatins sessionID and some other data ]
+  - cookie is encrypted using session secret
+  - add cookie to session with unique sessionID
+  - at the end of request add session to storage
+  - only COOKIE will be sent to client
+  in RESPONSE header : set-cookie: { sessionID: cookie }
+
+  2] client sends Back cookie in cookie header
+  - 1) take cookie from header and 
+      decrypt cookie using session secret
+  - 2) search for session in redis using sessionID from cookie
+  - 3) Attach session data from redis to REQUEST object
+  - 4) as session conatins some user relead data use it 
+       to perform user Specific tasks
+  - 5) send RESPONSE
+=========================================================
+--------- session ---------
+- stored on server side
+- sent with every request
+- has uniques sessionID used for authentication of user
+ how? check session present in backend db  
+- stored in cookies on client side
+- sent with each request to server
+- sessionID is just a string
+- session contains token
+
+--------- cookies ---------
+-cookie is header just  like authorization or content-type
+- Set-Header 
+- signed with secret 
+- can be encrypted
+- url encoded : not for security but compat
+- conatins sessionID token
+- attributes : 1) Domain 2) Path 3) Expiration
+-flags : 1) HttpOnly(can not read with js on browser) 
+         2) secure(HTTPS only i.e only can be sent on TLS channel)
+         3) SameSite (no CORS)
+
+- CSRF Attack : Croos-site Resource Forgery
+    - isme CSRF token bheja jata hai jo X-CSRF-TOKEN cookie header me 
+    original cookie k sath bheja jata hai
+
+==================TOKEN based auth (stateless approach )===============
+- tokens are not stored on server side only stored on client side
+- ( sessions are stored on server side)
+- signed with secret
+- sent in Authorization header
+-  XSS Attack may become easy
+- used Web app, mobile apps
+1) user logs in and token is generated and sent to client 
+2) client stores token in storage and send with each request to server
+3) server verifies token and grants access
+4) if log out token is cleared from client storage (Ex. browser storage)
+
+====== local Storage =====
+
+- permenant
+- different for each site so no other site can access
+  i.e. Domain-Specific
+- size 5MB > 4Kb cookie size
+- Cons:
+  - format plain text
+  - limited to string format need to serialize to work with json
+  - any JS code can read data so XSS Attack  is easy
+   so can steal tokens
+
+===== Session Storage =====
+- cleared when page is loaded  

@@ -1,0 +1,31 @@
+version: "3"
+services:
+  nginx:
+    ports:
+      - "3000:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+  api-gate-way-ex1:
+    build:
+      context: .
+      args:
+        - NODE_ENV=dev
+
+    # below is the port mapping from the container to the host machine but if there is another copose file which overrides this port then that port will be used in this case docker-compose.yml will override the port
+    # ports:
+    #   - "5000:3000"
+      # - "5000:${PORT}" # this is wrong as we are using the env variable in the port mapping and it will not work as the env variable is not available at this point of time
+    #  env_file sets the environment variables from the file specified in the container and not in the host machine so that we can have different environment variables for different environments like dev, qa, prod etc and we can have different env files for each environment
+    env_file:
+      - ./.dev.env
+    volumes:
+    #  below is bound volume for the app folder which is required to be mounted so that we can see the changes in the code without rebuilding the image
+    #  this is not required in production as we will be using the image built from the dockerfile
+    #  this makes the development faster as we change the code and see the changes without rebuilding the image
+    #  this maps the app folder in the host machine to the app folder in the container so what ever changes we make in the host machine will be reflected in the container
+      - ./:/app
+      # below is anonymous volume for node_modules which is not required to be mounted so that we can use the node_modules from the image and not from the host machine and also it will not be deleted when we do docker-compose down
+      - /app/node_modules
+    # environment:
+    #   - PORT=3000
+    command: npm run dev

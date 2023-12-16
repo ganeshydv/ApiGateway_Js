@@ -1,0 +1,11 @@
+
+/node_modules
+
+.dev.env
+
+.env
+
+/app/logs
+
+__folder_structure__.txt
+__Project_Structure__.txt

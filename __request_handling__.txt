@@ -1,0 +1,43 @@
+In vanila js
+ways of handling routes:
+
+1) using function
+-- write all request in one method and pass it server/reques handler 
+ as argument 
+    - user this argument to call the requests
+
+Ex: 
+- file 1 : app = express()
+           routes.route(app)
+- file 2 :
+
+// exports.route =  function(app){
+//         app.get("/checkOk",checkRoute.checkOk);
+//  }
+
+// module.exports.route = function(app){
+//     app.get("/checkOk",checkRoute.checkOk);
+// }
+
+2) using class :
+- file 1 :
+        app.listen(port,()=>{
+            // start server and then regiser the routes
+            let helloRoute=new routes.route(app);
+            helloRoute.getRoute();
+            console.log(`server running on port ${port}`);
+        }) 
+
+- file 2 :
+
+    module.exports.route = class route{
+        constructor(app){
+            this.app=app;
+        }
+        
+        getRoute(){
+            this.app.get("/checkOk",checkRoute.checkOk);
+        }
+    
+    }
+

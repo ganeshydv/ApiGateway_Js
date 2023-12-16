@@ -1,0 +1,40 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:stable-alpine
+    depends_on:
+      - api-gate-way-ex1
+    
+  api-gate-way-ex1:
+    build:
+      context: .
+    # ports to map the host machine port to container port
+    # ports:
+      # - "8080:3000"  no need as using nginx for load balaning and routing
+    depends_on:
+      - mongo
+      - redis
+      
+
+    
+  mongo:
+    image : mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root123
+    # named volumes used to persist data even after container is removed
+    # volumes are created in the host machine in /var/lib/docker/volumes
+    #  and `/data/db` is the default directory where mongo stores data
+    #  basically we are mapping the host machine directory to the container directory to persist data even after container is removed
+    volumes:
+      - mongo-db:/data/db
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+      #  following cmd is used to set password for redis
+    command: ['--requirepass "secret"']
+      
+volumes:
+  mongo-db:

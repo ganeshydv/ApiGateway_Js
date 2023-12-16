@@ -1,0 +1,15 @@
+version: "3"
+services:
+  nginx:
+    ports:
+      - "80:80"
+  api-gate-way-ex1:
+    build:
+      context: .
+      args:
+        - NODE_ENV=prod
+    env_file:
+      - ./prod.env
+    environment:
+      - PORT=3000
+    command: npm start
