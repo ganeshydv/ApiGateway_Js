@@ -20,7 +20,7 @@ The Sample API Gateway is a microservice designed for authentication and authori
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/sample-api-gateway.git
+   git clone https://github.com/ganeshydv/sample-api-gateway.git
 
 
 2. Navigate to main folder
