@@ -42,3 +42,8 @@ The Sample API Gateway is a microservice designed for authentication and authori
 for more about docker cmd and their use read [docker.txt ] file
 ----------------------------------------------------------------------------------
   
+7. to connects with redis container
+  cmd :   docker exec -it apigateway-redis-1 redis-cli -a secret
+
+8. to connect with mongodb container
+  cms : docker exec -it apigateway-mongo-1 mongosh -u root -p root123

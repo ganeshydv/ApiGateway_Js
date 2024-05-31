@@ -1,0 +1,91 @@
+to use nodemialer for 2fa or psd reset
+need email prvoider
+can use google for this
+step:
+1) login in google Cloud
+2) go to api and services
+3) create project
+4) serach for : Gmail API -- enable it
+5) Gmail API--> enable --> create credentials
+  --> 
+
+  --------------------------------------------------------------
+  
+To use OAuth2 for Gmail with Nodemailer, you'll need to follow these general steps:
+
+Create a Project in the Google Cloud Console:
+
+Go to the Google Cloud Console.
+Create a new project or select an existing one.
+Enable Gmail API:
+
+In the Google Cloud Console, navigate to the "APIs & Services" > "Dashboard."
+Click on the "+ ENABLE APIS AND SERVICES" button.
+Search for and enable the "Gmail API" for your project.
+Create Credentials:
+
+In the Google Cloud Console, navigate to "APIs & Services" > "Credentials."
+Click on "Create Credentials" and choose "OAuth client ID."
+Configure the consent screen with the required information.
+Select "Desktop App" as the application type.
+Click "Create" to create the OAuth client ID.
+Download Credentials:
+
+After creating the OAuth client ID, click on the download button to download the JSON file containing your client ID and client secret. This file will be used in your Node.js application.
+Install Required Packages:
+Install the required Nodemailer package for OAuth2 support:
+
+bash
+Copy code
+npm install nodemailer google-auth-library
+Use Nodemailer with OAuth2:
+Here's a basic example of using Nodemailer with OAuth2:
+
+javascript
+Copy code
+const nodemailer = require('nodemailer');
+const { google } = require('google-auth-library');
+const fs = require('fs');
+
+// Load client secrets from a file
+const credentials = JSON.parse(fs.readFileSync('path/to/credentials.json'));
+
+const { client_secret, client_id, redirect_uris } = credentials.installed;
+const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
+
+oAuth2Client.setCredentials({
+  refresh_token: 'YOUR_REFRESH_TOKEN'
+});
+
+// Create a Nodemailer transporter with OAuth2
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    type: 'OAuth2',
+    user: 'your.email@gmail.com',
+    clientId: client_id,
+    clientSecret: client_secret,
+    refreshToken: 'YOUR_REFRESH_TOKEN',
+    accessToken: oAuth2Client.getAccessToken(),
+  }
+});
+
+// Define the email options
+const mailOptions = {
+  from: 'your.email@gmail.com',
+  to: 'recipient@example.com',
+  subject: 'Subject of the email',
+  text: 'Body of the email'
+};
+
+// Send the email
+transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+});
+Replace 'path/to/credentials.json' with the actual path to your downloaded credentials JSON file.
+Replace 'YOUR_REFRESH_TOKEN' with the refresh token obtained during the OAuth2 flow.
+This example demonstrates a basic setup. Make sure to handle token refreshing and error handling in a production environment. The initial setup may seem involved, but it provides a secure way to authenticate your application with Gmail using OAuth2.

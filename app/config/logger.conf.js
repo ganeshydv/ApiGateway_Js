@@ -6,12 +6,23 @@ const logger = bunyan.createLogger({
   streams: [
     {
       level: 'info', // Set the log level (info, warn, error, etc.)
-      // stream: process.stdout, // Log to the console,
       path: 'app/logs/info.json', // Path to info log file
+      period: '1d',   // Daily rotation
+      count: 3,       // Keep 3 back copies
+    },
+    {
+      level: 'info', // Set the log level (info, warn, error, etc.)
+      stream: process.stdout, // Log to the console
+      path: 'app/logs/info.log', // Path to info log file
+      period: '1d',   // Daily rotation
+      count: 3,       // Keep 3 back copies
     },
     {
       level: 'error', // Log error messages to a separate file
       path: 'app/logs/error.log', // Path to error log file 
+      period: '1d',   // Daily rotation
+      count: 3,       // Keep 3 back copies
+
     },
     {
       type: 'rotating-file',

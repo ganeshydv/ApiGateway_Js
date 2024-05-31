@@ -78,7 +78,8 @@ module.exports.registerUserController = async function (req, res, next) {
             } catch (error) {
                 res.send({
                     status: "fail",
-                    message: "error in creating user"
+                    message: "error in creating user",
+                    error: error
                 })
             }
             // create token and send

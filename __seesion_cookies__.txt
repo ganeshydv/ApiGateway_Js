@@ -6,7 +6,7 @@ https://www.youtube.com/watch?v=kmAzuH2Lzug&list=PLcCp4mjO-z9_HmJ5rSonmiEGfP-kyR
 authentication can be : 
 1] JWT-stateless  : if no session is stored in server
   Ex. if only jwt is verified for authentication
-
+1.1] persistent token-based authentication: if token is stored in db
 2] Session-statefull : if session is stored in backend
 
 IMP: When using a session store, such as Redis, 
@@ -93,7 +93,7 @@ inavalid session
 
 ====== local Storage =====
 
-- permenant
+- permanent
 - different for each site so no other site can access
   i.e. Domain-Specific
 - size 5MB > 4Kb cookie size
