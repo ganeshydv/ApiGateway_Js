@@ -42,7 +42,7 @@ const { rateLimiter } = require("./utils/rateLimiter");
         secret: "this is secret",
         name: "sid",
         cookie: {
-            maxAge: 1000 * 60 * 30,
+            maxAge: 1000 * 60 * 30, // 30 minutes
             sameSite: true,
             secure: false, // set to true in production
         },

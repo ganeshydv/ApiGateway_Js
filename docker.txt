@@ -43,7 +43,7 @@ cmds :
    -Docker exec -it containerName bash
 
 5) check logs for crash
-   -cmd: docker log containerName -f
+   -cmd: docker logs containerName -f
 6) add ENV vars:
    -cmd : docker run -v %cd%:/app:ro -v /app/node_modules --env PORT=8080 -p 4000:8080 -d --name api-g-1 api-gateway-1
   -From .dotenv file: --env-file ./.env

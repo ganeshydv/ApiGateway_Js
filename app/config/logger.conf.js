@@ -13,7 +13,7 @@ const logger = bunyan.createLogger({
     {
       level: 'info', // Set the log level (info, warn, error, etc.)
       stream: process.stdout, // Log to the console
-      path: 'app/logs/info.log', // Path to info log file
+      path: 'app/logs/console.log', // Path to info log file
       period: '1d',   // Daily rotation
       count: 3,       // Keep 3 back copies
     },

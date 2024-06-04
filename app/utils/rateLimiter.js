@@ -1,5 +1,5 @@
 const redisClient=require('../db/db.redis');
-client.on('error', function (error) {
+redisClient.on('error', function (error) {
     console.log(error);
 });
 
@@ -20,6 +20,7 @@ module.exports.rateLimiter = async function (req, res, next) {
                 message: "rate limit exceeded"
             })
         }
+        next();
     }catch(error){
         console.log(error);
         res.send({
